@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/countdownjs@2.5.0/countdown.min.js"></script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container with border */
+        .container {
+            border: 2px solid #fff;
+            padding: 20px;
+            width: 90%;
+            max-width: 900px;
+            margin: 20px auto;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Issue and history position */
+        .issue-history {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Lottery results section */
+        .lottery-results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .lottery-results div {
+            padding: 10px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .lottery-results span {
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        /* Countdown and next draw timer */
+        .countdown-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .countdown-section div {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Family section for 野野特 and Family*/
+        .family-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 2px solid #fff;
+        }
+
+        .family-section h2 {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .family-item {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 600px) {
+            .lottery-results {
+                flex-direction: column;
+            }
+            .lottery-results div {
+                width: 60px;
+            }
+            .issue-history {
+                font-size: 16px;
+            }
+            .countdown-section {
+                font-size: 16px;
+            }
+            .family-section {
+                font-size: 14px;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .lottery-results div {
+                width: 50px;
+            }
+            .countdown-section {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main container with border -->
+    <div class="container">
+        
+        <!-- Issue number and history position -->
+        <div class="issue-history">
+            <div id="issue-number">第 078 期</div>
+            <div>历史记录</div>
+        </div>
+        
+        <!-- Lottery Results -->
+        <div class="lottery-results">
+            <div>
+                <span>15</span><br>
+                <span>猪</span>
+            </div>
+            <div>
+                <span>38</span><br>
+                <span>蛇</span>
+            </div>
+            <div>
+                <span>18</span><br>
+                <span>羊</span>
+            </div>
+            <div>
+                <span>03</span><br>
+                <span>猴</span>
+            </div>
+            <div>
+                <span>08</span><br>
+                <span>鸡</span>
+            </div>
+            <div>
+                <span>11</span><br>
+                <span>狗</span>
+            </div>
+            <div>
+                <span>+</span><br>
+            </div>
+            <div>
+                <span>28</span><br>
+                <span>鼠</span>
+            </div>
+        </div>
+
+        <!-- Countdown and next draw timer -->
+        <div class="countdown-section">
+            <div>下期开奖倒计时：</div>
+            <div id="timer" style="font-weight: bold;"></div>
+        </div>
+
+        <!-- Family section for 野野特 -->
+        <div class="family-section">
+            <h2>今日热门</h2>
+            <div class="family-item">076期家野中特【野兽】开:兔39准</div>
+            <div class="family-item">077期家野中特【野兽】开:猴22准</div>
+            <div class="family-item">078期家野中特【野兽】开:虎28准</div>
+            <div class="family-item">079期家野中特【家禽】开:發00准</div>
+        </div>
+    </div>
+
+    <script>
+        // Get the next draw time (today's 9:30 PM)
+        function getNextDrawTime() {
+            var now = new Date();
+            var drawTime = new Date();
+
+            // Set the draw time to today 9:30 PM
+            drawTime.setHours(21, 30, 0, 0);
+
+            // If it's already past 9:30 PM, set the draw time to 9:30 PM the next day
+            if (now > drawTime) {
+                drawTime.setDate(drawTime.getDate() + 1);
+            }
+
+            return drawTime;
+        }
+
+        // Countdown timer function
+        function countdownTimer() {
+            var now = new Date().getTime();
+            var drawTime = getNextDrawTime().getTime();
+            var distance = drawTime - now;
+
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerHTML = hours + "小时 " + minutes + "分钟 " + seconds + "秒 ";
+
+            if (distance < 0) {
+                // If countdown reaches zero, reset to next day's 9:30 PM
+                getNextDrawTime();
+            }
+        }
+
+        // Update issue number based on current date and time
+        function updateIssueNumber() {
+            var today = new Date();
+            var startDate = new Date('2025-01-01'); // Assume the starting date for the lottery is Jan 1, 2025
+            var diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+            // If current time is past 9:35 PM, increment the issue number for the next day
+            var currentTime = today.getHours() * 60 + today.getMinutes();
+            if (currentTime >= 21 * 60 + 35) { // After 9:35 PM
+                diffDays++;
+            }
+
+            // Set issue number to the current calculated issue number
+            document.getElementById('issue-number').innerText = '第 ' + String(diffDays).padStart(3, '0') + ' 期';
+        }
+
+        // Call the countdownTimer every second
+        setInterval(countdownTimer, 1000);
+
+        // Update the issue number immediately when the page loads
+        updateIssueNumber();
+
+        // Set a timer to update the issue number at 9:35 PM each day
+        setInterval(updateIssueNumber, 60000); // Check every minute to update the issue number
+    </script>
+
+</body>
+</html>
